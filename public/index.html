@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pay-me Register</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div
+      class="container d-flex justify-content-evenly align-items-start gap-4 py-5"
+    >
+      <div class="register d-grid">
+        <h3 class="text-center">Register</h3>
+
+        <form id="register" class="d-flex flex-wrap gap-2 my-5">
+          <label class="col-form-label">Ism</label>
+          <input type="text" class="firstName" placeholder="First name" />
+
+          <label class="col-form-label">Familya</label>
+          <input type="text" class="lastName" placeholder="Second name" />
+
+          <label class="col-form-label">Tel. raqam</label>
+          <input
+            type="tel"
+            placeholder="--- -- --"
+            mask="00 000 00 00"
+            pattern="^[0-9]{9}$"
+            value="+998 "
+            class="phoneNumber"
+          />
+
+          <label class="col-form-label">Parol</label>
+          <input type="password" class="password" placeholder="Password" />
+        </form>
+
+        <div class="btn-group gap-4">
+          <button class="btn btn-secondary">Cancel</button>
+          <button class="btn btn-primary addUser">Add User</button>
+        </div>
+      </div>
+
+      <div class="list">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Full Name</th>
+              <th scope="col">Phone number</th>
+              <th scope="col">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <tr>
+              <th scope="row">1</th>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>
+                <button class="deleteUser btn btn-danger">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </td>
+            </tr> -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

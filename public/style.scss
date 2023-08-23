@@ -1,0 +1,34 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+}
+
+.list {
+  flex-basis: 65%;
+}
+
+.deleteUser {
+  height: 35px;
+}
+
+.register {
+  width: 400px;
+  height: 650px;
+  padding: 20px;
+  flex-basis: 35%;
+  border-radius: 10px;
+  border: 1px solid #0d6efd;
+}
+
+input {
+  width: 100%;
+  height: 50px;
+  padding: 10px 15px;
+}
