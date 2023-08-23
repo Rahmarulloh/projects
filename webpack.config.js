@@ -38,7 +38,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "Init project", // Load a custom template (lodash by default)
-      template: "public/index.html",
+      template: "src/index.html",
     }),
     new MiniCssExtractPlugin({
       filename: "bundle.css",

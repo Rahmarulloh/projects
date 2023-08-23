@@ -1,51 +1,47 @@
-import "../public/style.scss";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./projects/pay-me/typescript/index";
-import { User } from "./projects/pay-me/typescript/entities";
-import { UserRepository } from "./projects/pay-me/typescript/repository/user";
+import "./style.scss";
+import { ActiveBoards } from "./app";
+const game = document.querySelector(".game");
+const boards: NodeListOf<HTMLDivElement> = document.querySelectorAll(".board");
 
-const firstName: HTMLInputElement = document.querySelector(".firstName");
-const lastName: HTMLInputElement = document.querySelector(".lastName");
-const phoneNumber: HTMLInputElement = document.querySelector(".phoneNumber");
-const password: HTMLInputElement = document.querySelector(".password");
-const addUser: HTMLButtonElement = document.querySelector(".addUser");
-const tbody = document.querySelector("tbody");
-const userRepository = new UserRepository();
+function boardClick() {
+  for (let i = 0; i < boards.length; i++) {
+    const boardElm = boards[i];
 
-function handleAddUser() {
-  const user = new User(
-    firstName.value,
-    lastName.value,
-    phoneNumber.value,
-    password.value
-  );
+    for (let j = 0; j < boardElm.children.length; j++) {
+      const cellElm = boardElm.children[j];
 
-  userRepository.createUser(user);
-
-  const tr = document.createElement("tr");
-  const th = document.createElement("th");
-  th.setAttribute("scope", "row");
-  th.textContent = `${user.getId()}`;
-  tr.appendChild(th);
-
-  const tdFName = document.createElement("td");
-  tdFName.textContent = `${user.firstName} ${user.lastName}`;
-  tr.appendChild(tdFName);
-  const tdPhNumber = document.createElement("td");
-  tdPhNumber.textContent = `${user.phoneNumber}`;
-  tr.appendChild(tdPhNumber);
-  const tdDeleteBtn = document.createElement("td");
-  const btnRemove = document.createElement("button") as HTMLButtonElement;
-  btnRemove.className = "deleteUser btn btn-danger";
-  btnRemove.innerHTML = `<i class="fa-solid fa-trash"></i>`;
-  tdDeleteBtn.appendChild(btnRemove);
-  tr.appendChild(tdDeleteBtn);
-  btnRemove.addEventListener("click", function removeEL(): void {
-    tr.remove();
-    return userRepository.deleteUser(user.getId(), user);
-  });
-
-  tbody.appendChild(tr);
+      cellElm.addEventListener("click", () => cellClick(i, j));
+    }
+  }
 }
 
-addUser.addEventListener("click", handleAddUser);
+console.log(boardClick());
+
+function cellClick(boardIdx: number, cellIdx: number) {
+  for (const boardElm of boards) {
+    for (const cellElm of boardElm.children) {
+      cellElm.className = "cell";
+    }
+  }
+
+  const currentBoard: HTMLDivElement = boards[boardIdx];
+  for (const cell of currentBoard.children) {
+    cell.classList.add("active");
+  }
+
+  const activeBoardsArray = new ActiveBoards();
+  const activeBoards = activeBoardsArray.getActiveBoards(boardIdx, cellIdx);
+
+  console.log(activeBoards);
+
+  for (let activeBoardIdx in activeBoards) {
+    const activeBoardElm = boards[activeBoardIdx];
+    const activeCells: number = activeBoards[activeBoardIdx];
+
+    //   @ts-ignore
+    for (let activeCellIdx of activeCells) {
+      const activeCellElm = activeBoardElm.children[activeCellIdx];
+      activeCellElm.className = "cell active";
+    }
+  }
+}
