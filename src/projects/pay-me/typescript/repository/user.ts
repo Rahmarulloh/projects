@@ -16,7 +16,7 @@ export class UserRepository {
   deleteUser(userId: number, user?: User) {
     const currentUser = this.getUserById(userId);
     this.userList.splice(this.userList.indexOf(currentUser), 1);
-    user.setId(this.id--);
+    user.setId((this.id = User.length));
   }
 
   getUserById(id: number) {
