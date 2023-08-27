@@ -41,8 +41,8 @@ const dashboardHTML = `<div class="cards-table">
 					</div>
 
 					<form class="d-flex" role="search">
-					<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-success" type="submit">Search</button>
+					<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="search">
+					<button class="btn btn-outline-success" id="btnSearch" type="submit">Search</button>
 					</form>
 				</div>
 			</div>
@@ -75,6 +75,8 @@ export const dashboard = (
   const leftSide = document.querySelector(".btns") as HTMLElement;
   const name = leftSide.querySelector(".title") as HTMLHeadingElement;
   const picture = leftSide.querySelector(".profile-pic") as HTMLDivElement;
+  const searchBar = document.querySelector("#search") as HTMLInputElement;
+  const btnSearch = document.querySelector("#btnSearch") as HTMLButtonElement;
 
   const formSelect = document.querySelector(".form-select") as HTMLFormElement;
   const tableBody = document.querySelector("#tbody") as HTMLTableElement;
@@ -97,8 +99,8 @@ export const dashboard = (
     th.innerText = `${i + 1}`;
     const name = callDataToTd(user[0]);
     const cardNumber = callDataToTd(cardList.number);
-    const cardTypeElm = callDataToTd(cardList.bankName);
-    const bankNameElm = callDataToTd(cardList.cardType);
+    const cardTypeElm = callDataToTd(cardList.cardType);
+    const bankNameElm = callDataToTd(cardList.bankName);
     const cardDate = callDataToTd(cardList.expiry);
 
     tr.appendChild(th);
@@ -116,33 +118,66 @@ export const dashboard = (
     return td;
   }
 
-  // function searchFunc(data:[]) {
-  
-    for (let i = 0; i < data.length; i++) {
-      const user: string[] = userList[i];
-      const cardList: Card = cardService.getList()[i];
+  btnSearch.addEventListener("click", (e) => {
+    e.preventDefault();
+    tableBody.innerHTML = "";
 
-      const tr = document.createElement("tr") as HTMLTableRowElement;
-      const th = document.createElement("td") as HTMLTableHeaderCellElement;
+    const searchTerm = searchBar.value.trim(); // Trim whitespace from the search term
 
-      th.scope = "row";
-      th.innerText = `${i + 1}`;
+    if (!Number(searchTerm)) {
+      for (let i = 0; i < cardsList.length; i++) {
+        const user = userList[i];
+        const cardList = cardsList[i];
 
-      const name = callDataToTd(user[0]);
-      const cardNumber = callDataToTd(cardList.number);
-      const cardTypeElm = callDataToTd(cardList.bankName);
-      const bankNameElm = callDataToTd(cardList.cardType);
-      const cardDate = callDataToTd(cardList.expiry);
+        if (searchTerm === cardList[2]) {
+          const tr = document.createElement("tr");
+          const th = document.createElement("td");
+          th.scope = "row";
+          th.innerText = `${i + 1}`;
 
-      tr.appendChild(th);
-      tr.appendChild(name);
-      tr.appendChild(cardNumber);
-      tr.appendChild(cardTypeElm);
-      tr.appendChild(bankNameElm);
-      tr.appendChild(cardDate);
-      tableBody.appendChild(tr);
+          const name = callDataToTd(user[0]);
+          const cardNumber = callDataToTd(cardList[0]);
+          const cardTypeElm = callDataToTd(cardList[2]);
+          const bankNameElm = callDataToTd(cardList[3]);
+          const cardDate = callDataToTd(cardList[1]);
+
+          tr.appendChild(th);
+          tr.appendChild(name);
+          tr.appendChild(cardNumber);
+          tr.appendChild(cardTypeElm);
+          tr.appendChild(bankNameElm);
+          tr.appendChild(cardDate);
+          tableBody.appendChild(tr);
+        }
+      }
+    } else {
+      const cardNumbers = cardService.getCardNumber(searchTerm);
+      for (let i = 0; i < cardNumbers.length; i++) {
+        const cardNumber = cardNumbers[i].number;
+        const cardList = cardService.getList()[i];
+        const user = userList[i];
+
+        const tr = document.createElement("tr");
+        const th = document.createElement("td");
+        th.scope = "row";
+        th.innerText = `${i + 1}`;
+
+        const name = callDataToTd(user[0]);
+        const cardNumberCell = callDataToTd(`${cardNumber}`);
+        const cardTypeElm = callDataToTd(cardList.cardType); // Corrected
+        const bankNameElm = callDataToTd(cardList.bankName); // Corrected
+        const cardDate = callDataToTd(cardList.expiry);
+
+        tr.appendChild(th);
+        tr.appendChild(name);
+        tr.appendChild(cardNumberCell);
+        tr.appendChild(cardTypeElm);
+        tr.appendChild(bankNameElm);
+        tr.appendChild(cardDate);
+        tableBody.appendChild(tr);
+      }
     }
-  // }
+  });
 
   name.innerText = `${user.firstName + " " + user.lastName}`;
   picture.innerText = `${name.innerText.slice(0, 1)}`;
