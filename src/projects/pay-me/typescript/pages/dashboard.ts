@@ -83,10 +83,44 @@ export const dashboard = (
 
   for (let i = 0; i < userService.getUserList().length; i++) {
     const option = document.createElement("option") as HTMLOptionElement;
-    option.value = `${i + 1}`;
+    option.value = `${userService.getUserList()[i].firstName}`;
     option.innerText = userService.getUserList()[i].firstName;
     formSelect.appendChild(option);
   }
+
+  formSelect.addEventListener("change", () => {
+    const selectedUserName = formSelect.value;
+    tableBody.innerHTML = "";
+
+    for (let i = 0; i < userService.getUserList().length; i++) {
+      const user = userService.getUserList()[i];
+      const cardList: Card = cardService.getList()[i];
+
+      if (selectedUserName === user.firstName) {
+        const tr = document.createElement("tr") as HTMLTableRowElement;
+        const th = document.createElement("td") as HTMLTableHeaderCellElement;
+
+        th.scope = "row";
+        th.innerText = `${i + 1}`;
+
+        const name = callDataToTd(user.firstName);
+        const cardNumber = callDataToTd(cardList.number);
+        const cardTypeElm = callDataToTd(cardList.cardType);
+        const bankNameElm = callDataToTd(cardList.bankName);
+        const cardDate = callDataToTd(cardList.expiry);
+
+        tr.appendChild(th);
+        tr.appendChild(name);
+        tr.appendChild(cardNumber);
+        tr.appendChild(cardTypeElm);
+        tr.appendChild(bankNameElm);
+        tr.appendChild(cardDate);
+        tableBody.appendChild(tr);
+
+        break;
+      }
+    }
+  });
 
   for (let i = 0; i < userList.length; i++) {
     const user: string[] = userList[i];
@@ -122,7 +156,7 @@ export const dashboard = (
     e.preventDefault();
     tableBody.innerHTML = "";
 
-    const searchTerm = searchBar.value.trim(); // Trim whitespace from the search term
+    const searchTerm = searchBar.value;
 
     if (!Number(searchTerm)) {
       for (let i = 0; i < cardsList.length; i++) {
@@ -150,8 +184,9 @@ export const dashboard = (
           tableBody.appendChild(tr);
         }
       }
-    } else {
+    } else if (Number(searchTerm)) {
       const cardNumbers = cardService.getCardNumber(searchTerm);
+      
       for (let i = 0; i < cardNumbers.length; i++) {
         const cardNumber = cardNumbers[i].number;
         const cardList = cardService.getList()[i];
@@ -164,8 +199,8 @@ export const dashboard = (
 
         const name = callDataToTd(user[0]);
         const cardNumberCell = callDataToTd(`${cardNumber}`);
-        const cardTypeElm = callDataToTd(cardList.cardType); // Corrected
-        const bankNameElm = callDataToTd(cardList.bankName); // Corrected
+        const cardTypeElm = callDataToTd(cardList.cardType);
+        const bankNameElm = callDataToTd(cardList.bankName);
         const cardDate = callDataToTd(cardList.expiry);
 
         tr.appendChild(th);
