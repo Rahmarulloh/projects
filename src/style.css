@@ -31,6 +31,7 @@ body {
 }
 
 .card__content {
+  color: #000;
   display: grid;
   gap: var(--size-2);
 }
