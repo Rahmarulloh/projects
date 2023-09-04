@@ -1,4 +1,5 @@
-import { UserRepository } from "../repository/user";
+import { User } from "../entities/user";
+import { newUser } from "../repository";
 import { products } from "./products";
 
 const createForm = (formName: string, navigate: string) =>
@@ -15,7 +16,7 @@ const createForm = (formName: string, navigate: string) =>
               type="tel"
               placeholder="Enter user name"
               class="form-control"
-              id="name"
+              id="firstName"
               required
             />
           </div>
@@ -43,8 +44,6 @@ const createForm = (formName: string, navigate: string) =>
 export const registerLogin = () => {
   let formName: string = "Log in";
 
-  const newUser = new UserRepository();
-
   const navigator = "Do you have an account ?";
   document.body.innerHTML = createForm(formName, navigator);
 
@@ -54,8 +53,8 @@ export const registerLogin = () => {
   btn.innerText = formName;
   form.appendChild(btn);
 
-  const name = form.querySelector("#name") as HTMLInputElement;
-  const password = form.querySelector("#password") as HTMLInputElement;
+  const name = document.querySelector("#firstName") as HTMLInputElement;
+  const password = document.querySelector("#password") as HTMLInputElement;
 
   btn.onclick = (e) => {
     e.preventDefault();

@@ -7,4 +7,8 @@ export class UserRepository {
     const user = new User(firstName, password);
     this.userList.push(user);
   }
+
+  getUserList() {
+    return this.userList;
+  }
 }

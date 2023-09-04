@@ -1,5 +1,5 @@
-import { Products } from "../entities/index";
-import { ProductRepository } from "../repository/product";
+import { User } from "../entities/user";
+import { newUser } from "../repository";
 import { registerLogin } from "./registerLogin";
 
 const productHTML = `
@@ -10,6 +10,7 @@ const productHTML = `
           <button
             type="button"
             class="btn btn-outline-primary position-relative d-none"
+            id="basket"
           >
             <i class="bi bi-cart4"></i>
             <span
@@ -49,7 +50,7 @@ export const products = async () => {
   let counter = 0;
 
   try {
-    const response = await fetch("https://dummyjson.com/products?limit=100");
+    const response = await fetch("https://dummyjson.com/products?limit=90");
     const json = await response.json();
 
     console.log(json);
@@ -77,10 +78,17 @@ export const products = async () => {
       }
     });
 
-    const singUpButton = document.querySelector("#logIn") as HTMLButtonElement;
-    singUpButton.addEventListener("click", () => {
-      registerLogin();
-    });
+    const logInBtn = document.querySelector("#logIn") as HTMLButtonElement;
+    const basket = document.querySelector("#basket") as HTMLButtonElement;
+    if (newUser.userList.length !== 0) {
+      logInBtn.textContent = `Log out (${newUser.userList[0].firstName})`;
+      logInBtn.className = "btn btn-outline-danger";
+      basket.classList.remove("d-none");
+    } else {
+      logInBtn.addEventListener("click", () => {
+        registerLogin();
+      });
+    }
   } catch (error) {
     console.error("Error fetching data:", error);
   }
