@@ -80,14 +80,14 @@ export const products = async () => {
 
     const logInBtn = document.querySelector("#logIn") as HTMLButtonElement;
     const basket = document.querySelector("#basket") as HTMLButtonElement;
-    if (newUser.userList.length !== 0) {
-      logInBtn.textContent = `Log out (${newUser.userList[0].firstName})`;
-      logInBtn.className = "btn btn-outline-danger";
-      basket.classList.remove("d-none");
-    } else {
+    if (newUser.userList.length === 0) {
       logInBtn.addEventListener("click", () => {
         registerLogin();
       });
+    } else {
+      logInBtn.textContent = `Log out (${newUser.userList[0].firstName})`;
+      logInBtn.className = "btn btn-outline-danger";
+      basket.classList.remove("d-none");
     }
   } catch (error) {
     console.error("Error fetching data:", error);

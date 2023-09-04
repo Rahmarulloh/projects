@@ -19,6 +19,9 @@ const createForm = (formName: string, navigate: string) =>
               id="firstName"
               required
             />
+            <div class="invalid-feedback" id="validate">
+              Please enter a user name
+            </div>
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
@@ -29,6 +32,9 @@ const createForm = (formName: string, navigate: string) =>
               id="password"
               required
             />
+            <div class="invalid-feedback" id="validate">
+              Please enter a password
+            </div>
           </div>
           <div
             style="cursor: pointer"
@@ -55,10 +61,23 @@ export const registerLogin = () => {
 
   const name = document.querySelector("#firstName") as HTMLInputElement;
   const password = document.querySelector("#password") as HTMLInputElement;
+  const validates = document.querySelectorAll(
+    "#validate"
+  ) as NodeListOf<HTMLDivElement>;
 
   btn.onclick = (e) => {
     e.preventDefault();
-    products();
-    newUser.create(name.value, password.value);
+
+    if (name.value !== "" && password.value !== "") {
+      products();
+      newUser.create(name.value, password.value);
+      for (const validate of validates) {
+        validate.className = "valid-feedback d-block";
+      }
+    } else {
+      for (const validate of validates) {
+        validate.classList.add("d-block");
+      }
+    }
   };
 };
