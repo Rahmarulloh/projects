@@ -29,4 +29,18 @@ export class ProductRepository {
       product.title.toLowerCase().includes(productTitle.toLowerCase())
     );
   }
+
+  sort(productPrice = ""): Products[] {
+    const products: Products[] = this.getList();
+
+    if (!productPrice) return products;
+
+    if (productPrice === "ascending") {
+      return [...products].sort((a, b) => Number(a.price) - Number(b.price));
+    } else if (productPrice === "descending") {
+      return [...products].sort((a, b) => Number(b.price) - Number(a.price));
+    } else if (productPrice === "all") {
+      return [...products];
+    }
+  }
 }

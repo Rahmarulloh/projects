@@ -35,7 +35,7 @@ const productHTML = `
               id="search"
               autocomplete="off"
             />
-            <select class="form-select" aria-label="Default select example">
+            <select class="form-select" id="select">
               <option selected value="all">All</option>
               <option value="ascending">Ascending</option>
               <option value="descending">Descending</option>
@@ -67,6 +67,7 @@ export const products = async () => {
   const container = document.querySelector("#cards") as HTMLDivElement;
   const badge = document.querySelector("#badge") as HTMLSpanElement;
   const searchElm = document.querySelector("#search") as HTMLInputElement;
+  const selectElm = document.querySelector("#select") as HTMLSelectElement;
   let counter = 0;
 
   try {
@@ -93,6 +94,20 @@ export const products = async () => {
     window.addEventListener("keyup", (e) => {
       e.preventDefault();
       const products = newProduct.search(searchElm.value);
+      container.innerHTML = "";
+      for (const product of products) {
+        container.innerHTML += createCardHTML(
+          product.title,
+          product.thumbnail,
+          product.price
+        );
+      }
+      console.log(products);
+    });
+
+    selectElm.addEventListener("change", (e) => {
+      e.preventDefault();
+      const products = newProduct.sort(selectElm.value);
       container.innerHTML = "";
       for (const product of products) {
         container.innerHTML += createCardHTML(
