@@ -19,4 +19,14 @@ export class ProductRepository {
   getList() {
     return this.productList;
   }
+
+  search(productTitle = ""): Products[] {
+    const products: Products[] = this.getList();
+
+    if (!productTitle) return products;
+
+    return products.filter((product) =>
+      product.title.toLowerCase().includes(productTitle.toLowerCase())
+    );
+  }
 }

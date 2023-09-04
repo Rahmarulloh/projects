@@ -9,7 +9,7 @@ export class Products {
     public price: string
   ) {}
 
-  getProduct() {
+  getProductCard() {
     return [this.title, this.thumbnail, this.price];
   }
 }

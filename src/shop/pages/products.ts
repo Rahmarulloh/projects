@@ -1,5 +1,5 @@
 import { User } from "../entities/user";
-import { newUser } from "../repository";
+import { newProduct, newUser } from "../repository";
 import { registerLogin } from "./registerLogin";
 
 const productHTML = `
@@ -25,7 +25,26 @@ const productHTML = `
     </nav> 
 
     <div class="container mt-5">
-      <div class="row row-cols-1 row-cols-md-4 g-4" id="cards"></div>
+      <nav class="navbar w-50 bg-body-tertiary rounded">
+        <div class="container-fluid">
+          <form class="d-flex w-100" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              id="search"
+              autocomplete="off"
+            />
+            <select class="form-select" aria-label="Default select example">
+              <option selected value="all">All</option>
+              <option value="ascending">Ascending</option>
+              <option value="descending">Descending</option>
+            </select>
+          </form>
+        </div>
+      </nav>
+      
+      <div class="row row-cols-1 row-cols-md-4 g-4 my-3" id="cards"></div>
     </div>
 `;
 
@@ -47,10 +66,11 @@ export const products = async () => {
 
   const container = document.querySelector("#cards") as HTMLDivElement;
   const badge = document.querySelector("#badge") as HTMLSpanElement;
+  const searchElm = document.querySelector("#search") as HTMLInputElement;
   let counter = 0;
 
   try {
-    const response = await fetch("https://dummyjson.com/products?limit=90");
+    const response = await fetch("https://dummyjson.com/products?limit=120");
     const json = await response.json();
 
     console.log(json);
@@ -61,12 +81,38 @@ export const products = async () => {
         product.thumbnail,
         product.price
       );
+
+      newProduct.create(
+        product.title,
+        product.description,
+        product.thumbnail,
+        product.price
+      );
     }
 
-    container.addEventListener("click", (event) => {
-      const target = event.target as HTMLButtonElement;
+    window.addEventListener("keyup", (e) => {
+      e.preventDefault();
+      const products = newProduct.search(searchElm.value);
+      container.innerHTML = "";
+      for (const product of products) {
+        container.innerHTML += createCardHTML(
+          product.title,
+          product.thumbnail,
+          product.price
+        );
+      }
+      console.log(products);
+    });
 
-      if (target.classList.contains("card__btn")) {
+    console.log(newProduct.getList());
+
+    container.addEventListener("click", (e) => {
+      const target = e.target as HTMLButtonElement;
+
+      if (
+        target.classList.contains("card__btn") &&
+        newUser.getUserList().length > 0
+      ) {
         target.disabled = true;
 
         counter++;
@@ -75,6 +121,10 @@ export const products = async () => {
 
         badge.innerText = `${counter > 50 ? "50+" : counter}`;
         badge.classList.remove("visually-hidden");
+        target.textContent = "In cart";
+        target.className = "btn btn-outline-primary card__btn";
+      } else if (target.classList.contains("card__btn")) {
+        registerLogin();
       }
     });
 
