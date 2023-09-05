@@ -1,6 +1,6 @@
 import { Cart } from "../entities";
 import { newCart, newProduct, newUser } from "../repository";
-import { basket } from "./cart";
+import { cartService } from "../services";
 import { registerLogin } from "./registerLogin";
 
 const productHTML = `
@@ -127,12 +127,12 @@ const renderTable = (carts: Cart[]) => {
   for (let i = 0; i < carts.length; i++) {
     const cart = carts[i];
     tableHtml += `
-      <tr>
+      <tr class="table-row">
         <th scope="row">${i + 1}</th>
-        <td>${cart.title}</td>
-        <td>${cart.price}</td>
-        <td class="d-flex gap-2 align-items-center">
-          <button class="btn btn-outline-danger btn-sm">-</button>
+        <td class="product-title">${cart.title}</td>
+        <td class="product-price">${cart.price}</td>
+        <td id="table-data" class="d-flex gap-2 align-items-center">
+          <button class="btn btn-outline-danger btn-sm" id="decrease">-</button>
           <div class="amount">${cart.amount}</div>
           <button class="btn btn-outline-success btn-sm" id="increase">+</button>
         </td>
@@ -153,6 +153,7 @@ export const products = async () => {
   const tableBody = document.querySelector(".table-body") as HTMLTableElement;
   const logInBtn = document.querySelector("#logIn") as HTMLButtonElement;
   const basketElm = document.querySelector("#basket") as HTMLButtonElement;
+
   const increaseBtnElm = document.querySelector(
     "#increase"
   ) as HTMLButtonElement;
@@ -187,7 +188,6 @@ export const products = async () => {
           product.price
         );
       }
-      console.log(products);
     });
 
     selectElm.addEventListener("change", (e) => {
@@ -201,15 +201,10 @@ export const products = async () => {
           product.price
         );
       }
-      console.log(products);
     });
-
-    console.log(newProduct.getList());
 
     container.addEventListener("click", (e) => {
       const target = e.target as HTMLButtonElement;
-      target.setAttribute("data-bs-toggle", "modal");
-      target.setAttribute("data-bs-target", "#staticBackdrop");
       const card = target.closest(".card");
       const title = card.querySelector(".card-title").textContent;
       const price = card.querySelector(".card-text").textContent;
@@ -218,18 +213,13 @@ export const products = async () => {
         return;
       }
 
-
       if (
         target.classList.contains("card__btn") &&
         newUser.getUserList().length > 0
       ) {
         const cartProduct = newCart.add(title, price);
-        const counter = newCart.getCartList().length;
+        const counter = newCart.cartList.length;
         target.disabled = true;
-
-        console.log(newCart.getCartList());
-
-        console.log(counter);
 
         badge.innerText = `${counter > 50 ? "50+" : counter}`;
         badge.classList.remove("visually-hidden");
@@ -238,12 +228,41 @@ export const products = async () => {
       } else if (target.classList.contains("card__btn")) {
         registerLogin();
       }
-
-      increaseBtnElm.addEventListener("click", () => {});
     });
 
     basketElm.addEventListener("click", () => {
       tableBody.innerHTML = renderTable(newCart.cartList);
+      const tableRowsElm: NodeListOf<HTMLTableRowElement> =
+        tableBody.querySelectorAll(".table-row");
+
+      tableRowsElm.forEach((row) => {
+        const title = row.querySelector(".product-title").textContent;
+        const price = row.querySelector(".product-price").textContent;
+        const tdBtnGroup = row.querySelector("#table-data") as HTMLTableElement;
+        const increase = tdBtnGroup.querySelector(
+          "#increase"
+        ) as HTMLButtonElement;
+        const decrease = tdBtnGroup.querySelector(
+          "#decrease"
+        ) as HTMLButtonElement;
+        const amountElm = tdBtnGroup.querySelector(".amount") as HTMLDivElement;
+
+        increase.addEventListener("click", () => {
+          amountElm.innerText = `${cartService.increase(
+            title,
+            price,
+            newCart.cartList
+          )}`;
+        });
+
+        decrease.addEventListener("click", () => {
+          const amount = cartService.decrease(title, price, newCart.cartList);
+          amountElm.innerText = `${amount}`;
+          if (amount <= 0) {
+            row.remove();
+          }
+        });
+      });
     });
 
     if (newUser.userList.length === 0) {

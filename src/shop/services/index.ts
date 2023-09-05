@@ -1,1 +1,5 @@
-export { CartService } from './cart';
+import { CartService } from "./cart";
+
+const cartService = new CartService();
+
+export { cartService };
