@@ -1,11 +1,11 @@
 import { faker } from "@faker-js/faker";
-import { Products } from "../entities/products";
+import { Product } from "../entities/products";
 
 export class ProductRepository {
-  private productList: Array<Products> = [];
+  private productList: Array<Product> = [];
 
   create(title: string, description: string, image: string, price: string) {
-    const product = new Products(
+    const product = new Product(
       faker.string.uuid(),
       title,
       description,
@@ -20,8 +20,8 @@ export class ProductRepository {
     return this.productList;
   }
 
-  search(productTitle = ""): Products[] {
-    const products: Products[] = this.getList();
+  search(productTitle = ""): Product[] {
+    const products: Product[] = this.getList();
 
     if (!productTitle) return products;
 
@@ -30,8 +30,8 @@ export class ProductRepository {
     );
   }
 
-  sort(productPrice = ""): Products[] {
-    const products: Products[] = this.getList();
+  sort(productPrice = ""): Product[] {
+    const products: Product[] = this.getList();
 
     if (!productPrice) return products;
 

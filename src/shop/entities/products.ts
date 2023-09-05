@@ -1,6 +1,6 @@
 export const productAPI: any[] = [];
 
-export class Products {
+export class Product {
   constructor(
     public id: string,
     public title: string,

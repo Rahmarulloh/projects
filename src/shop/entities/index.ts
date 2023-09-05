@@ -1,1 +1,2 @@
-export {Products, productAPI} from './products'
+export { Product } from "./products";
+export { Cart } from "./cart";
