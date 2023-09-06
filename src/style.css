@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.container-images {
+  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.container-images img {
+  height: 400px;
+  width: 100% !important;
+  margin-top: 0 !important;
+}
