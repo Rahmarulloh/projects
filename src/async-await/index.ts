@@ -53,7 +53,13 @@ export const getProducts = async () => {
   const response = await fetch(`${productURL}/${productsURL}?${limit}`);
   const data = await response.json();
   const products = data.products;
+  const maxPrice = products.reduce(
+    (acc: number, cur: { price: number }) => Math.max(acc, cur.price),
+    0
+  );
   amount.innerText = products.length;
+  price_input.value = maxPrice;
+  renderPrice(maxPrice);
 
   let cards = "";
   for (const product of products) {
