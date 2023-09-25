@@ -112,15 +112,15 @@ loginObject.btnLogin.addEventListener('click', async () => {
   });
 });
 
-if (localStorage.getItem('username') != ``) {
+if (!localStorage.getItem('username')) {
   loginObject.btnLogin.className = `nav-link disabled`;
   loginObject.btnLogin.setAttribute('aria-current', 'page');
   loginObject.btnLogin.style.cursor = 'pointer';
   loginObject.btnLogin.innerText = localStorage.getItem('username');
-  registerObject.btnRegister.innerText = ``;
+  // registerObject.btnRegister.innerText = ``;
   registerObject.btnRegister.className = `nav-link active`;
   registerObject.btnRegister.style.cursor = 'pointer';
-  registerObject.btnRegister.innerText = `Logout`;
+  // registerObject.btnRegister.innerText = `Register`;
 } else {
   loginObject.btnLogin.className = `nav-link active`;
   loginObject.btnLogin.setAttribute('aria-current', 'page');
