@@ -95,20 +95,34 @@ listAllGenres.addEventListener('click', () => {
   window.location.reload();
 });
 
+// User Login And Local Storage Section Addition Start
+
 loginObject.btnLogin.addEventListener('click', async () => {
   loginObject.mainContainerBody.innerHTML = ``;
   loginObject.createLoginForm();
 
   const loginBtn = document.querySelector('#login');
   const registerEmail = document.querySelector('#email') as HTMLInputElement;
+  // hugo@gmail.com
   const registerPassword = document.querySelector('#password') as HTMLInputElement;
+  // 27092004
 
   loginBtn.addEventListener('click', async () => {
     const token = await loginObject.login(registerEmail.value, registerPassword.value);
     const user = await Auth.Me(token);
     console.log('user = ', user);
+    localStorage.clear();
+    localStorage.setItem('username', `${user.name}`);
+
+    const username = localStorage.getItem('username');
+
+    console.log(username); // Output: hugo
+    loginObject.btnLogin.innerText = ``;
+    loginObject.btnLogin.className = `nav-link active`;
+    loginObject.btnLogin.setAttribute('aria-current', 'page');
+    loginObject.btnLogin.innerText = username;
     console.log(await init());
   });
-
-  console.log(loginBtn);
 });
+
+// User Login And Local Storage Section Addition Start
