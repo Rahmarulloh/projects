@@ -125,4 +125,11 @@ loginObject.btnLogin.addEventListener('click', async () => {
   });
 });
 
+if (localStorage.getItem('username') != ``) {
+  loginObject.btnLogin.className = `nav-link active`;
+  loginObject.btnLogin.setAttribute('aria-current', 'page');
+  loginObject.btnLogin.style.cursor = 'pointer';
+  loginObject.btnLogin.innerText = localStorage.getItem('username');
+}
+
 // User Login And Local Storage Section Addition Start
