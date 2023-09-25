@@ -4,7 +4,7 @@ import { getGenres, getMovies } from './api';
 import { createTableRow, createListItem } from './tabledata';
 import { Auth } from './services';
 import * as loginObject from './login';
-// import { pagination, renderByPagination } from './pagination';
+import { pagination, renderByPagination } from './pagination';
 
 export const tbody = document.querySelector('#tbody') as HTMLTableElement;
 export const movieLengthView = document.querySelector('#movieLengthView') as HTMLSpanElement;
@@ -14,7 +14,7 @@ const spinnerContainerTable = document.querySelector('#spinnerContainerTable') a
 const spinnerContainer = document.querySelector('#spinnerContainer') as HTMLDivElement;
 const logo = document.querySelector('#logo') as HTMLAnchorElement;
 
-let currentPage = 3;
+export let currentPage = 3;
 let rows = 5;
 
 logo.onclick = () => {
@@ -36,6 +36,16 @@ async function moviesByGenre(category: string) {
   });
 }
 
+export function paginationBtnClick(btn: HTMLLIElement, page: number, items: any[]) {
+  currentPage = page;
+  renderByPagination(items, tbody, rows, currentPage);
+
+  const currentBtn = document.querySelector('.pagination li.active');
+  currentBtn.classList.remove('active');
+
+  btn.classList.add('active');
+}
+
 export async function init() {
   try {
     spinnerContainer.classList.add('d-none');
@@ -48,6 +58,9 @@ export async function init() {
       createTableRow(movie.title, movieGenreName, movie.numberInStock, movie.dailyRentalRate);
       movieLengthView.innerText = `Showing ${tbody.children.length} movies in the table.`;
     }
+
+    renderByPagination(movies, tbody, rows, currentPage);
+    pagination(movies, rows);
 
     // renderByPagination(movies, tbody, rows, currentPage);
 
