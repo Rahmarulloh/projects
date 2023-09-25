@@ -2,9 +2,7 @@ import './main.css';
 import './search';
 import { getGenres, getMovies } from './api';
 import { createTableRow, createListItem } from './tabledata';
-import { Auth } from './services';
-import * as loginObject from './login';
-import { pagination, renderByPagination } from './pagination';
+import { pagination, renderByPagination, renderPaginationByGenre } from './pagination';
 
 export const tbody = document.querySelector('#tbody') as HTMLTableElement;
 export const movieLengthView = document.querySelector('#movieLengthView') as HTMLSpanElement;
@@ -14,7 +12,7 @@ const spinnerContainerTable = document.querySelector('#spinnerContainerTable') a
 const spinnerContainer = document.querySelector('#spinnerContainer') as HTMLDivElement;
 const logo = document.querySelector('#logo') as HTMLAnchorElement;
 
-export let currentPage = 3;
+export let currentPage = 1;
 let rows = 5;
 
 logo.onclick = () => {
@@ -27,13 +25,7 @@ async function moviesByGenre(category: string) {
   const movies = await getMovies();
   tbody.innerHTML = '';
 
-  movies.forEach((movie: any) => {
-    const movieGenreName = movie.genre.name;
-    if (movieGenreName === category) {
-      createTableRow(movie.title, movieGenreName, movie.numberInStock, movie.dailyRentalRate);
-    }
-    movieLengthView.innerText = `Showing ${tbody.children.length} movies in the table.`;
-  });
+  renderPaginationByGenre(movies, tbody, rows, currentPage, category);
 }
 
 export function paginationBtnClick(btn: HTMLLIElement, page: number, items: any[]) {
@@ -51,18 +43,10 @@ export async function init() {
     spinnerContainer.classList.add('d-none');
     spinnerContainerTable.classList.add('d-none');
     const [movies, genres] = await Promise.all([getMovies(), getGenres()]);
-
-    for (let i = 0; i < movies.length; i += 4) {
-      const movie = movies[i];
-      const movieGenreName = movie.genre.name;
-      createTableRow(movie.title, movieGenreName, movie.numberInStock, movie.dailyRentalRate);
-      movieLengthView.innerText = `Showing ${tbody.children.length} movies in the table.`;
-    }
+    const items = Array.from(tbody.children);
 
     renderByPagination(movies, tbody, rows, currentPage);
     pagination(movies, rows);
-
-    // renderByPagination(movies, tbody, rows, currentPage);
 
     genres.forEach((genre: any) => {
       const genreName = genre.name;
@@ -93,22 +77,4 @@ listAllGenres.addEventListener('click', () => {
   listTab.innerHTML = ``;
   tbody.innerHTML = ``;
   window.location.reload();
-});
-
-loginObject.btnLogin.addEventListener('click', async () => {
-  loginObject.mainContainerBody.innerHTML = ``;
-  loginObject.createLoginForm();
-
-  const loginBtn = document.querySelector('#login');
-  const registerEmail = document.querySelector('#email') as HTMLInputElement;
-  const registerPassword = document.querySelector('#password') as HTMLInputElement;
-
-  loginBtn.addEventListener('click', async () => {
-    const token = await loginObject.login(registerEmail.value, registerPassword.value);
-    const user = await Auth.Me(token);
-    console.log('user = ', user);
-    console.log(await init());
-  });
-
-  console.log(loginBtn);
 });

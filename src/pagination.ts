@@ -1,15 +1,28 @@
-import { currentPage, paginationBtnClick } from './index';
+import { currentPage, movieLengthView, paginationBtnClick, tbody } from './index';
 import { createTableRow } from './tabledata';
 
 const paginationContainer = document.querySelector('.pagination');
 
 const pagination = (items: any[], rows_per_page: number) => {
   paginationContainer.innerHTML = '';
-  let page_count = Math.ceil(items.length / rows_per_page);
-  for (let i = 1; i < page_count + 1; i++) {
-    const btn = paginationBTN(i, items);
-    paginationContainer.appendChild(btn);
+  if (items.length >= rows_per_page) {
+    let page_count = Math.ceil(items.length / rows_per_page);
+    for (let i = 1; i < page_count + 1; i++) {
+      const btn = paginationBTN(i, items);
+      paginationContainer.appendChild(btn);
+    }
   }
+};
+
+export const renderPaginationByGenre = (
+  items: any[],
+  wrapper: HTMLTableElement,
+  rows_per_page: number,
+  page: number,
+  category: string
+) => {
+  const filteredMovies = items.filter(movie => movie.genre.name === category);
+  renderByPagination(filteredMovies, wrapper, rows_per_page, page);
 };
 
 const renderByPagination = (
@@ -30,6 +43,7 @@ const renderByPagination = (
     console.log('movie => ', movie);
     const movieGenreName = movie.genre.name;
     createTableRow(movie.title, movieGenreName, movie.numberInStock, movie.dailyRentalRate);
+    movieLengthView.innerText = `Showing ${tbody.children.length} movies in the table.`;
   }
 };
 
