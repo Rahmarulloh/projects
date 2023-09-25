@@ -4,7 +4,6 @@ import { getGenres, getMovies } from './api';
 import { createTableRow, createListItem } from './tabledata';
 import { Auth } from './services';
 import * as loginObject from './login';
-import { pagination, renderByPagination } from './pagination';
 import * as registerObject from './register';
 import { pagination, renderByPagination, renderPaginationByGenre } from './pagination';
 
@@ -114,15 +113,15 @@ loginObject.btnLogin.addEventListener('click', async () => {
   });
 });
 
-if (localStorage.getItem('username') != ``) {
-  loginObject.btnLogin.className = `nav-link disabled`;
-  loginObject.btnLogin.setAttribute('aria-current', 'page');
-  loginObject.btnLogin.style.cursor = 'pointer';
-  loginObject.btnLogin.innerText = localStorage.getItem('username');
-  registerObject.btnRegister.innerText = ``;
-  registerObject.btnRegister.className = `nav-link active`;
-  registerObject.btnRegister.style.cursor = 'pointer';
-  registerObject.btnRegister.innerText = `Logout`;
-}
+// if (localStorage.getItem('username') != ``) {
+//   loginObject.btnLogin.className = `nav-link disabled`;
+//   loginObject.btnLogin.setAttribute('aria-current', 'page');
+//   loginObject.btnLogin.style.cursor = 'pointer';
+//   loginObject.btnLogin.innerText = localStorage.getItem('username');
+//   registerObject.btnRegister.innerText = ``;
+//   registerObject.btnRegister.className = `nav-link active`;
+//   registerObject.btnRegister.style.cursor = 'pointer';
+//   registerObject.btnRegister.innerText = `Logout`;
+// }
 
 // User Login And Local Storage Section Addition Start
