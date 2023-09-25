@@ -12,7 +12,7 @@ const spinnerContainerTable = document.querySelector('#spinnerContainerTable') a
 const spinnerContainer = document.querySelector('#spinnerContainer') as HTMLDivElement;
 const logo = document.querySelector('#logo') as HTMLAnchorElement;
 
-let currentPage = 3;
+export let currentPage = 1;
 let rows = 5;
 
 logo.onclick = () => {
@@ -34,11 +34,22 @@ async function moviesByGenre(category: string) {
   });
 }
 
+export function paginationBtnClick(btn: HTMLLIElement, page: number, items: any[]) {
+  currentPage = page;
+  renderByPagination(items, tbody, rows, currentPage);
+
+  const currentBtn = document.querySelector('.pagination li.active');
+  currentBtn.classList.remove('active');
+
+  btn.classList.add('active');
+}
+
 export async function init() {
   try {
     spinnerContainer.classList.add('d-none');
     spinnerContainerTable.classList.add('d-none');
     const [movies, genres] = await Promise.all([getMovies(), getGenres()]);
+    const items = Array.from(tbody.children);
 
     for (let i = 0; i < movies.length; i += 4) {
       const movie = movies[i];
@@ -48,6 +59,7 @@ export async function init() {
     }
 
     renderByPagination(movies, tbody, rows, currentPage);
+    pagination(movies, rows);
 
     genres.forEach((genre: any) => {
       const genreName = genre.name;

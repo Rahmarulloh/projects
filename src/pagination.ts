@@ -1,11 +1,15 @@
+import { currentPage, paginationBtnClick } from '.';
 import { createTableRow } from './tabledata';
 
 const paginationContainer = document.querySelector('.pagination');
 
 const pagination = (items: any[], rows_per_page: number) => {
   paginationContainer.innerHTML = '';
-  const pageItem = `<li class="page-item"><a class="page-link" href="#">${page}</a></li>`;
-  paginationContainer.innerHTML += pageItem;
+  let page_count = Math.ceil(items.length / rows_per_page);
+  for (let i = 1; i < page_count + 1; i++) {
+    const btn = paginationBTN(i, items);
+    paginationContainer.appendChild(btn);
+  }
 };
 
 const renderByPagination = (
@@ -28,5 +32,20 @@ const renderByPagination = (
     createTableRow(movie.title, movieGenreName, movie.numberInStock, movie.dailyRentalRate);
   }
 };
+
+function paginationBTN(page: number, items: any[]) {
+  const li = document.createElement('li');
+  li.className = 'page-item';
+  const a = document.createElement('a');
+  a.classList.add('page-link');
+  a.innerHTML = `${page}`;
+  li.appendChild(a);
+
+  if (currentPage === page) li.classList.add('active');
+
+  li.addEventListener('click', () => paginationBtnClick(li, page, items));
+
+  return li;
+}
 
 export { pagination, renderByPagination };
