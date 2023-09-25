@@ -2,6 +2,10 @@ import './main.css';
 import './search';
 import { getGenres, getMovies } from './api';
 import { createTableRow, createListItem } from './tabledata';
+import { Auth } from './services';
+import * as loginObject from './login';
+import { pagination, renderByPagination } from './pagination';
+import * as registerObject from './register';
 import { pagination, renderByPagination, renderPaginationByGenre } from './pagination';
 
 export const tbody = document.querySelector('#tbody') as HTMLTableElement;
@@ -78,3 +82,47 @@ listAllGenres.addEventListener('click', () => {
   tbody.innerHTML = ``;
   window.location.reload();
 });
+
+// User Login And Local Storage Section Addition Start
+
+loginObject.btnLogin.addEventListener('click', async () => {
+  loginObject.mainContainerBody.innerHTML = ``;
+  loginObject.createLoginForm();
+
+  const loginBtn = document.querySelector('#login');
+  const registerEmail = document.querySelector('#email') as HTMLInputElement;
+  // hugo@gmail.com
+  const registerPassword = document.querySelector('#password') as HTMLInputElement;
+  // 27092004
+
+  loginBtn.addEventListener('click', async () => {
+    const token = await loginObject.login(registerEmail.value, registerPassword.value);
+    const user = await Auth.Me(token);
+    console.log('user = ', user);
+    localStorage.clear();
+    localStorage.setItem('username', `${user.name}`);
+
+    const username = localStorage.getItem('username');
+
+    console.log(username); // Output: hugo
+    loginObject.btnLogin.innerText = ``;
+    loginObject.btnLogin.className = `nav-link active`;
+    loginObject.btnLogin.setAttribute('aria-current', 'page');
+    loginObject.btnLogin.innerText = username;
+    // console.log(await init());
+    window.location.reload();
+  });
+});
+
+if (localStorage.getItem('username') != ``) {
+  loginObject.btnLogin.className = `nav-link disabled`;
+  loginObject.btnLogin.setAttribute('aria-current', 'page');
+  loginObject.btnLogin.style.cursor = 'pointer';
+  loginObject.btnLogin.innerText = localStorage.getItem('username');
+  registerObject.btnRegister.innerText = ``;
+  registerObject.btnRegister.className = `nav-link active`;
+  registerObject.btnRegister.style.cursor = 'pointer';
+  registerObject.btnRegister.innerText = `Logout`;
+}
+
+// User Login And Local Storage Section Addition Start

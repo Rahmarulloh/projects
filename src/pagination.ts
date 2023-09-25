@@ -37,10 +37,10 @@ const renderByPagination = (
   let start = rows_per_page * page;
   let end = start + rows_per_page;
   let paginatedMovies = items.slice(start, end);
-  console.log('paginatedMovies => ', paginatedMovies);
+  // console.log('paginatedMovies => ', paginatedMovies);
   for (let i = 0; i < paginatedMovies.length; i++) {
     const movie = paginatedMovies[i];
-    console.log('movie => ', movie);
+    // console.log('movie => ', movie);
     const movieGenreName = movie.genre.name;
     createTableRow(movie.title, movieGenreName, movie.numberInStock, movie.dailyRentalRate);
     movieLengthView.innerText = `Showing ${tbody.children.length} movies in the table.`;

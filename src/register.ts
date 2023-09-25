@@ -3,8 +3,8 @@ import './tabledata';
 import './search';
 import { Auth } from './services';
 
-const mainContainerBody = document.querySelector('#mainContainerBody') as HTMLDivElement;
-const btnRegister = document.querySelector('#btnRegister') as HTMLAnchorElement;
+export const mainContainerBody = document.querySelector('#mainContainerBody') as HTMLDivElement;
+export const btnRegister = document.querySelector('#btnRegister') as HTMLAnchorElement;
 
 btnRegister.addEventListener('click', () => {
   mainContainerBody.innerHTML = ``;
@@ -73,4 +73,3 @@ async function registerUser(email: string, password: string, name: string) {
   const newUser = await Auth.Register(fake);
   console.log('newUser = ', newUser);
 }
-
