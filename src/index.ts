@@ -97,34 +97,23 @@ loginObject.btnLogin.addEventListener('click', async () => {
     const token = await loginObject.login(registerEmail.value, registerPassword.value);
     const user = await Auth.Me(token);
     console.log('user = ', user);
-    localStorage.clear();
+    // localStorage.clear();
     localStorage.setItem('username', `${user.name}`);
 
     const username = localStorage.getItem('username');
-
-    loginObject.btnLogin.innerText = ``;
-    loginObject.btnLogin.className = `nav-link active`;
-    loginObject.btnLogin.setAttribute('aria-current', 'page');
-    loginObject.btnLogin.innerText = username;
 
     console.log(username); // Output: hugo
     window.location.reload();
   });
 });
-
-if (!localStorage.getItem('username')) {
-  loginObject.btnLogin.className = `nav-link disabled`;
-  loginObject.btnLogin.setAttribute('aria-current', 'page');
-  loginObject.btnLogin.style.cursor = 'pointer';
-  loginObject.btnLogin.innerText = localStorage.getItem('username');
-  // registerObject.btnRegister.innerText = ``;
-  registerObject.btnRegister.className = `nav-link active`;
-  registerObject.btnRegister.style.cursor = 'pointer';
-  // registerObject.btnRegister.innerText = `Register`;
+console.log(localStorage.getItem('username'));
+if (localStorage.getItem('username') == null) {
+  loginObject.btnLogin.innerText = 'Login';
 } else {
+  loginObject.btnLogin.innerText = ``;
   loginObject.btnLogin.className = `nav-link active`;
   loginObject.btnLogin.setAttribute('aria-current', 'page');
-  loginObject.btnLogin.style.cursor = 'pointer';
-  loginObject.btnLogin.innerText = 'Login';
+  loginObject.btnLogin.innerText = localStorage.getItem('username');
 }
+
 // User Login And Local Storage Section Addition Start
