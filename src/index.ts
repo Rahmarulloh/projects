@@ -63,8 +63,6 @@ export async function init() {
     renderByPagination(movies, tbody, rows, currentPage);
     pagination(movies, rows);
 
-    // renderByPagination(movies, tbody, rows, currentPage);
-
     genres.forEach((genre: any) => {
       const genreName = genre.name;
       createListItem(genreName);
@@ -97,7 +95,6 @@ listAllGenres.addEventListener('click', () => {
 });
 
 // User Login And Local Storage Section Addition Start
-
 loginObject.btnLogin.addEventListener('click', async () => {
   loginObject.mainContainerBody.innerHTML = ``;
   loginObject.createLoginForm();
@@ -117,12 +114,12 @@ loginObject.btnLogin.addEventListener('click', async () => {
 
     const username = localStorage.getItem('username');
 
-    console.log(username); // Output: hugo
     loginObject.btnLogin.innerText = ``;
     loginObject.btnLogin.className = `nav-link active`;
     loginObject.btnLogin.setAttribute('aria-current', 'page');
     loginObject.btnLogin.innerText = username;
-    // console.log(await init());
+
+    console.log(username); // Output: hugo
     window.location.reload();
   });
 });
@@ -136,6 +133,10 @@ if (localStorage.getItem('username') != ``) {
   registerObject.btnRegister.className = `nav-link active`;
   registerObject.btnRegister.style.cursor = 'pointer';
   registerObject.btnRegister.innerText = `Logout`;
+} else {
+  loginObject.btnLogin.className = `nav-link active`;
+  loginObject.btnLogin.setAttribute('aria-current', 'page');
+  loginObject.btnLogin.style.cursor = 'pointer';
+  loginObject.btnLogin.innerText = 'Login';
 }
-
 // User Login And Local Storage Section Addition Start
