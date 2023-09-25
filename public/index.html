@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<title>project</title>
+	</head>
+	<body>
+		<nav class="container navbar navbar-expand-lg bg-body-tertiary">
+			<div class="container-fluid">
+			  <a class="navbar-brand" href="#" id="logo">vidly</a>
+
+			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+
+			  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+				<ul class="navbar-nav">
+				  <li class="nav-item" id="btnLogin">
+					<a class="nav-link active" aria-current="page" href="#">Login</a>
+				  </li>
+				  <li class="nav-item" id="btnRegister">
+					<a class="nav-link" href="#">Register</a>
+				  </li>
+				</ul>
+			  </div>
+			</div>
+		</nav>
+
+		<div class="container my-2" id="mainContainerBody">
+			<div class="row">
+				<div class="col-4">
+				  <div class="list-group" id="list-tab" role="tablist">
+					<a class="list-group-item list-group-item-action active" id="all" data-bs-toggle="list" href="#all-url" role="tab" aria-controls="all-url">All Genres</a>
+					<div class="d-flex justify-content-center my-3" id="spinnerContainer">
+						<div class="spinner-border" role="status">
+						  <span class="visually-hidden">Loading...</span>
+						</div>
+					  </div>
+				  </div>
+				</div>
+				<div class="col-8">
+				  <div class="tab-content" id="nav-tabContent">
+					<div class="tab-pane fade show active" id="list-allgenres-url" role="tabpanel" aria-labelledby="list-allgenres">
+						<span class="fs-6 text-dark fw-semibold mb-2" id="movieLengthView"></span>
+
+						<input class="form-control my-2 shadow-none" id="searchInput" type="text" placeholder="Search" aria-label="default input example">
+
+						<table class="table table-hover" style="cursor: pointer;">
+							<thead>
+							  <tr>
+								<th scope="col">Title</th>
+								<th scope="col">Genre</th>
+								<th scope="col">Stock</th>
+								<th scope="col">Rate</th>
+								<th scope="col"></th>
+							  </tr>
+							</thead>
+							<tbody id="tbody"></tbody>
+						</table>
+
+						<nav aria-label="Page navigation example">
+							<ul class="pagination justify-content-end"></ul>
+						</nav>
+						  
+						<div class="d-flex justify-content-center" id="spinnerContainerTable">
+							<div class="spinner-border" role="status">
+								<span class="visually-hidden">Loading...</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+	</body>
+    </html>
