@@ -1,4 +1,4 @@
-import { currentPage, movieLengthView, paginationBtnClick, tbody } from '../index';
+import { currentPage, movieLengthView, paginationBtnClick } from '../index';
 import { createTableRow } from './tabledata';
 
 const paginationContainer = document.querySelector('.pagination');
@@ -35,6 +35,7 @@ const renderByPagination = (
 ) => {
   wrapper.innerHTML = '';
   page--;
+  movieLengthView.innerText = `Showing ${items.length} movies in the table.`;
 
   let start = rows_per_page * page;
   let end = start + rows_per_page;
@@ -42,11 +43,7 @@ const renderByPagination = (
   for (let i = 0; i < paginatedMovies.length; i++) {
     const movie = paginatedMovies[i];
     const movieGenreName = movie.genre.name;
-    createTableRow(movie.title, movieGenreName, movie.numberInStock, movie.dailyRentalRate);
-    console.log(items.length);
-    movieLengthView.innerText = `Showing ${
-      items.length === null ? 0 : items.length
-    } movies in the table.`;
+    createTableRow(movie.title, movieGenreName, movie.stock, movie.rate);
   }
 };
 

@@ -1,10 +1,9 @@
-import './main.css';
+import '../public/main.css';
 import './ui/search';
 import './ui/tabledata';
-import { createTableRow, createListItem } from './ui/tabledata';
+import { createListItem } from './ui/tabledata';
 import { Auth, Genre, Movie } from './services';
 import * as loginObject from './ui/login';
-import * as registerObject from './ui/register';
 import { pagination, renderByPagination, renderPaginationByGenre } from './ui/pagination';
 import { IEntity } from './utils/types';
 
@@ -27,7 +26,6 @@ export const categoryArray: any[] = [];
 
 async function moviesByGenre(category: string) {
   const movies = await Movie.List();
-  const newArray: IEntity.Movie[] = [];
   tbody.innerHTML = '';
 
   currentPage = 1;
