@@ -1,12 +1,12 @@
 import './main.css';
-import './search';
-import { getGenres, getMovies } from './api';
-import { createTableRow, createListItem } from './tabledata';
-import { Auth } from './services';
-import * as loginObject from './login';
-import * as registerObject from './register';
-import { pagination, renderByPagination, renderPaginationByGenre } from './pagination';
-import { IEntity } from './types';
+import './ui/search';
+import './ui/tabledata';
+import { createTableRow, createListItem } from './ui/tabledata';
+import { Auth, Genre, Movie } from './services';
+import * as loginObject from './ui/login';
+import * as registerObject from './ui/register';
+import { pagination, renderByPagination, renderPaginationByGenre } from './ui/pagination';
+import { IEntity } from './utils/types';
 
 export const tbody = document.querySelector('#tbody') as HTMLTableElement;
 export const movieLengthView = document.querySelector('#movieLengthView') as HTMLSpanElement;
@@ -26,19 +26,9 @@ logo.onclick = () => {
 export const categoryArray: any[] = [];
 
 async function moviesByGenre(category: string) {
-  const movies = await getMovies();
+  const movies = await Movie.List();
   const newArray: IEntity.Movie[] = [];
   tbody.innerHTML = '';
-
-  movies.forEach((movie: { genre: { name: string } }) => {
-    if (movie.genre.name === category) {
-      const filteredMovies = movies.filter(
-        (movie: { genre: { name: string } }) => movie.genre.name === category
-      );
-      newArray.push(filteredMovies);
-    }
-  });
-  console.log(movies.length);
 
   currentPage = 1;
   renderPaginationByGenre(movies, tbody, rows, currentPage, category);
@@ -58,7 +48,7 @@ export async function init() {
   try {
     spinnerContainer.classList.add('d-none');
     spinnerContainerTable.classList.add('d-none');
-    const [movies, genres] = await Promise.all([getMovies(), getGenres()]);
+    const [movies, genres] = await Promise.all([Movie.List(), Genre.List()]);
     const items = Array.from(tbody.children);
 
     renderByPagination(movies, tbody, rows, currentPage);

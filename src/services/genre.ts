@@ -1,5 +1,5 @@
-import * as Mappers from '../mappers';
-import { IForm } from '../types';
+import * as Mappers from '../utils/mappers';
+import { IForm } from '../utils/types';
 const baseURL = 'http://localhost:4000/api';
 
 const TOKEN =
