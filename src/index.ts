@@ -6,6 +6,7 @@ import { Auth } from './services';
 import * as loginObject from './login';
 import * as registerObject from './register';
 import { pagination, renderByPagination, renderPaginationByGenre } from './pagination';
+import { IEntity } from './types';
 
 export const tbody = document.querySelector('#tbody') as HTMLTableElement;
 export const movieLengthView = document.querySelector('#movieLengthView') as HTMLSpanElement;
@@ -26,8 +27,20 @@ export const categoryArray: any[] = [];
 
 async function moviesByGenre(category: string) {
   const movies = await getMovies();
+  const newArray: IEntity.Movie[] = [];
   tbody.innerHTML = '';
 
+  movies.forEach((movie: { genre: { name: string } }) => {
+    if (movie.genre.name === category) {
+      const filteredMovies = movies.filter(
+        (movie: { genre: { name: string } }) => movie.genre.name === category
+      );
+      newArray.push(filteredMovies);
+    }
+  });
+  console.log(movies.length);
+
+  currentPage = 1;
   renderPaginationByGenre(movies, tbody, rows, currentPage, category);
 }
 
@@ -70,7 +83,7 @@ export async function init() {
       });
     });
   } catch (error) {
-    console.error(error.message);
+    console.error('error: ', error.message);
   }
 }
 

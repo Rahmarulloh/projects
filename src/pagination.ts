@@ -22,7 +22,9 @@ export const renderPaginationByGenre = (
   category: string
 ) => {
   const filteredMovies = items.filter(movie => movie.genre.name === category);
+  console.log(filteredMovies);
   renderByPagination(filteredMovies, wrapper, rows_per_page, page);
+  pagination(filteredMovies, rows_per_page);
 };
 
 const renderByPagination = (
@@ -37,13 +39,14 @@ const renderByPagination = (
   let start = rows_per_page * page;
   let end = start + rows_per_page;
   let paginatedMovies = items.slice(start, end);
-  // console.log('paginatedMovies => ', paginatedMovies);
   for (let i = 0; i < paginatedMovies.length; i++) {
     const movie = paginatedMovies[i];
-    // console.log('movie => ', movie);
     const movieGenreName = movie.genre.name;
     createTableRow(movie.title, movieGenreName, movie.numberInStock, movie.dailyRentalRate);
-    movieLengthView.innerText = `Showing ${tbody.children.length} movies in the table.`;
+    console.log(items.length);
+    movieLengthView.innerText = `Showing ${
+      items.length === null ? 0 : items.length
+    } movies in the table.`;
   }
 };
 
@@ -55,6 +58,7 @@ function paginationBTN(page: number, items: any[]) {
   a.innerHTML = `${page}`;
   li.appendChild(a);
 
+  li.classList.remove('active');
   if (currentPage === page) li.classList.add('active');
 
   li.addEventListener('click', () => paginationBtnClick(li, page, items));
