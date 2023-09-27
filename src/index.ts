@@ -1,9 +1,10 @@
 import '../public/main.css';
 import './ui/search';
 import './ui/tabledata';
+import * as loginObject from './ui/login';
+import * as registerObj from './ui/register';
 import { createListItem } from './ui/tabledata';
 import { Auth, Genre, Movie } from './services';
-import * as loginObject from './ui/login';
 import { pagination, renderByPagination, renderPaginationByGenre } from './ui/pagination';
 import { IEntity } from './utils/types';
 
@@ -47,7 +48,6 @@ export async function init() {
     spinnerContainer.classList.add('d-none');
     spinnerContainerTable.classList.add('d-none');
     const [movies, genres] = await Promise.all([Movie.List(), Genre.List()]);
-    const items = Array.from(tbody.children);
 
     renderByPagination(movies, tbody, rows, currentPage);
     pagination(movies, rows);
@@ -98,7 +98,6 @@ loginObject.btnLogin.addEventListener('click', async () => {
     const token = await loginObject.login(registerEmail.value, registerPassword.value);
     const user = await Auth.Me(token);
     console.log('user = ', user);
-    // localStorage.clear();
     localStorage.setItem('username', `${user.name}`);
 
     const username = localStorage.getItem('username');
@@ -107,7 +106,7 @@ loginObject.btnLogin.addEventListener('click', async () => {
     window.location.reload();
   });
 });
-console.log(localStorage.getItem('username'));
+
 if (localStorage.getItem('username') == null) {
   loginObject.btnLogin.innerText = 'Login';
 } else {
@@ -115,6 +114,7 @@ if (localStorage.getItem('username') == null) {
   loginObject.btnLogin.className = `nav-link active`;
   loginObject.btnLogin.setAttribute('aria-current', 'page');
   loginObject.btnLogin.innerText = localStorage.getItem('username');
+  registerObj.btnRegisterA.innerText = 'Log out';
 }
 
 // User Login And Local Storage Section Addition Start

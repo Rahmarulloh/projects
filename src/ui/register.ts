@@ -5,6 +5,7 @@ import { Auth } from '../services';
 
 export const mainContainerBody = document.querySelector('#mainContainerBody') as HTMLDivElement;
 export const btnRegister = document.querySelector('#btnRegister') as HTMLAnchorElement;
+export const btnRegisterA = document.querySelector('#registeAHref') as HTMLAnchorElement;
 
 btnRegister.addEventListener('click', () => {
   mainContainerBody.innerHTML = ``;
